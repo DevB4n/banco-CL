@@ -113,148 +113,177 @@ INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 1
 (1, '2025-03-01', 6000.00, 'pagado'),
 (1, '2025-04-01', 6000.00, 'pendiente'),
-(1, '2025-05-01', 6000.00, 'pendiente'),
+(1, '2025-05-01', 6000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 2
 (2, '2025-03-01', 10000.00, 'pagado'),
 (2, '2025-04-01', 10000.00, 'pagado'),
-(2, '2025-05-01', 10000.00, 'pendiente'),
+(2, '2025-05-01', 10000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 3
 (3, '2025-03-01', 14000.00, 'pendiente'),
 (3, '2025-04-01', 14000.00, 'pendiente'),
-(3, '2025-05-01', 14000.00, 'pendiente'),
+(3, '2025-05-01', 14000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 4
 (4, '2025-03-01', 5000.00, 'pagado'),
 (4, '2025-04-01', 5000.00, 'pagado'),
-(4, '2025-05-01', 5000.00, 'pendiente'),
+(4, '2025-05-01', 5000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 5
 (5, '2025-03-01', 9000.00, 'pagado'),
 (5, '2025-04-01', 9000.00, 'pendiente'),
-(5, '2025-05-01', 9000.00, 'pendiente'),
+(5, '2025-05-01', 9000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 6
 (6, '2025-03-01', 12000.00, 'pendiente'),
 (6, '2025-04-01', 12000.00, 'pendiente'),
-(6, '2025-05-01', 12000.00, 'pagado'),
+(6, '2025-05-01', 12000.00, 'pagado');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 7
 (7, '2025-03-01', 4000.00, 'pagado'),
 (7, '2025-04-01', 4000.00, 'pagado'),
-(7, '2025-05-01', 4000.00, 'pagado'),
+(7, '2025-05-01', 4000.00, 'pagado');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 8
 (8, '2025-03-01', 9600.00, 'pendiente'),
 (8, '2025-04-01', 9600.00, 'pendiente'),
-(8, '2025-05-01', 9600.00, 'pendiente'),
+(8, '2025-05-01', 9600.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 9
 (9, '2025-03-01', 13000.00, 'pagado'),
 (9, '2025-04-01', 13000.00, 'pendiente'),
-(9, '2025-05-01', 13000.00, 'pendiente'),
+(9, '2025-05-01', 13000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 10
 (10, '2025-03-01', 4400.00, 'pagado'),
 (10, '2025-04-01', 4400.00, 'pagado'),
-(10, '2025-05-01', 4400.00, 'pendiente'),
+(10, '2025-05-01', 4400.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 11
 (11, '2025-03-01', 10200.00, 'pagado'),
 (11, '2025-04-01', 10200.00, 'pendiente'),
-(11, '2025-05-01', 10200.00, 'pendiente'),
+(11, '2025-05-01', 10200.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 12
 (12, '2025-03-01', 15000.00, 'pendiente'),
 (12, '2025-04-01', 15000.00, 'pendiente'),
-(12, '2025-05-01', 15000.00, 'pendiente'),
+(12, '2025-05-01', 15000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 13
 (13, '2025-03-01', 6000.00, 'pagado'),
 (13, '2025-04-01', 6000.00, 'pagado'),
-(13, '2025-05-01', 6000.00, 'pendiente'),
+(13, '2025-05-01', 6000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 14
 (14, '2025-03-01', 9400.00, 'pendiente'),
 (14, '2025-04-01', 9400.00, 'pendiente'),
-(14, '2025-05-01', 9400.00, 'pagado'),
+(14, '2025-05-01', 9400.00, 'pagado');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 15
 (15, '2025-03-01', 14400.00, 'pendiente'),
 (15, '2025-04-01', 14400.00, 'pendiente'),
-(15, '2025-05-01', 14400.00, 'pagado'),
+(15, '2025-05-01', 14400.00, 'pagado');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 16
 (16, '2025-03-01', 5600.00, 'pagado'),
 (16, '2025-04-01', 5600.00, 'pendiente'),
-(16, '2025-05-01', 5600.00, 'pendiente'),
+(16, '2025-05-01', 5600.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 17
 (17, '2025-03-01', 10000.00, 'pagado'),
 (17, '2025-04-01', 10000.00, 'pagado'),
-(17, '2025-05-01', 10000.00, 'pendiente'),
+(17, '2025-05-01', 10000.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 18
 (18, '2025-03-01', 13800.00, 'pendiente'),
 (18, '2025-04-01', 13800.00, 'pendiente'),
-(18, '2025-05-01', 13800.00, 'pendiente'),
+(18, '2025-05-01', 13800.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 19
 (19, '2025-03-01', 5200.00, 'pagado'),
 (19, '2025-04-01', 5200.00, 'pendiente'),
-(19, '2025-05-01', 5200.00, 'pagado'),
+(19, '2025-05-01', 5200.00, 'pagado');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 20
 (20, '2025-03-01', 10400.00, 'pagado'),
 (20, '2025-04-01', 10400.00, 'pendiente'),
-(20, '2025-05-01', 10400.00, 'pendiente'),
+(20, '2025-05-01', 10400.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 21
 (21, '2025-03-01', 14200.00, 'pendiente'),
 (21, '2025-04-01', 14200.00, 'pendiente'),
-(21, '2025-05-01', 14200.00, 'pendiente'),
+(21, '2025-05-01', 14200.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 22
 (22, '2025-03-01', 4600.00, 'pagado'),
 (22, '2025-04-01', 4600.00, 'pagado'),
-(22, '2025-05-01', 4600.00, 'pendiente'),
+(22, '2025-05-01', 4600.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 23
 (23, '2025-03-01', 9800.00, 'pendiente'),
 (23, '2025-04-01', 9800.00, 'pendiente'),
-(23, '2025-05-01', 9800.00, 'pendiente'),
+(23, '2025-05-01', 9800.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 24
 (24, '2025-03-01', 12800.00, 'pendiente'),
 (24, '2025-04-01', 12800.00, 'pagado'),
-(24, '2025-05-01', 12800.00, 'pendiente'),
+(24, '2025-05-01', 12800.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 25
 (25, '2025-03-01', 6200.00, 'pagado'),
 (25, '2025-04-01', 6200.00, 'pagado'),
-(25, '2025-05-01', 6200.00, 'pendiente'),
+(25, '2025-05-01', 6200.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 26
 (26, '2025-03-01', 9100.00, 'pendiente'),
 (26, '2025-04-01', 9100.00, 'pendiente'),
-(26, '2025-05-01', 9100.00, 'pendiente'),
+(26, '2025-05-01', 9100.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 27
 (27, '2025-03-01', 13600.00, 'pagado'),
 (27, '2025-04-01', 13600.00, 'pendiente'),
-(27, '2025-05-01', 13600.00, 'pendiente'),
+(27, '2025-05-01', 13600.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 28
 (28, '2025-03-01', 5800.00, 'pendiente'),
 (28, '2025-04-01', 5800.00, 'pendiente'),
-(28, '2025-05-01', 5800.00, 'pagado'),
+(28, '2025-05-01', 5800.00, 'pagado');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 29
 (29, '2025-03-01', 9900.00, 'pagado'),
 (29, '2025-04-01', 9900.00, 'pendiente'),
-(29, '2025-05-01', 9900.00, 'pendiente'),
+(29, '2025-05-01', 9900.00, 'pendiente');
 
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
 -- Tarjeta 30
 (30, '2025-03-01', 14200.00, 'pendiente'),
 (30, '2025-04-01', 14200.00, 'pagado'),
@@ -288,8 +317,9 @@ INSERT INTO pago (fecha_pago, fecha_maxima_pago, monto_pagado, estado) VALUES
 ('2025-03-03 11:00:00', '2025-03-05', 13600.00, 'exitoso'),
 ('2025-05-03 17:20:00', '2025-05-05', 5800.00, 'exitoso'),
 ('2025-03-01 07:50:00', '2025-03-05', 9900.00, 'exitoso'),
-('2025-04-01 08:30:00', '2025-04-05', 14200.00, 'exitoso'),
+('2025-04-01 08:30:00', '2025-04-05', 14200.00, 'exitoso');
 
+INSERT INTO pago (fecha_pago, fecha_maxima_pago, monto_pagado, estado) VALUES
 -- Pagos fallidos (simulación)
 ('2025-03-05 13:00:00', '2025-03-05', 10000.00, 'fallido'),
 ('2025-03-06 09:00:00', '2025-03-05', 9500.00, 'fallido'),
