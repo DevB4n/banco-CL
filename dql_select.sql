@@ -231,7 +231,6 @@ SELECT *
 FROM tarjeta
 WHERE MONTH(fecha_apertura) = 2;
 
-
 --#38. Mostrar las cuotas cuyo monto es múltiplo de 500.
 SELECT cm.cuota_manejo_id, cm.monto
 FROM cuota_manejo cm
@@ -246,6 +245,58 @@ SELECT * FROM cliente
 ORDER BY cliente_id DESC
 LIMIT 3;
 
+--#41. Muestra el total de cuotas pagadas.
+SELECT * 
+FROM cuota_manejo 
+WHERE estado_pago = 'pagado';
+
+--#42. Muestra los pagos realizados después del 1 de marzo de 2024.
+SELECT * 
+FROM pago 
+WHERE fecha_pago > '2024-03-01';
+
+--#43. Muestra los clientes con tarjetas tipo 'Nomina'.
+SELECT DISTINCT c.nombre
+FROM cliente c
+JOIN tarjeta t ON c.cliente_id = t.cliente_id
+JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+WHERE tt.nombre = 'Nomina';
+
+--#44. Muestra los clientes con tarjetas tipo 'Visa'.
+SELECT DISTINCT c.nombre
+FROM cliente c
+JOIN tarjeta t ON c.cliente_id = t.cliente_id
+JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+WHERE tt.nombre = 'Visa';
+
+--#45. Clientes con cuotas pagadas en mayo
+SELECT t.numero_tarjeta
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.estado_pago = 'pagado' AND MONTH(cm.fecha_cuota) = 5;;
+
+
+--46. Imprime el los clientes que tienen correo electrónico de yahoo.
+SELECT * FROM cliente WHERE correo_electronico LIKE '%yahoo.com';
+
+
+--47. Imprime el los clientes que tienen correo electrónico de outlook.
+SELECT * FROM cliente WHERE correo_electronico LIKE '%outlook.com';
+
+--48. Imprime el cliente cuyo apellido es 'Torres'.
+SELECT * FROM cliente WHERE apellido = 'Torres';
+
+--#49. Se muestran los 5 clientes más recientes registrados limitando el resultado a 5.
+SELECT * FROM cliente
+ORDER BY cliente_id ASC
+LIMIT 5;
+
+--#50. Muestra las tarjetas cuyo total de cuotas es mayor a 3000
+SELECT t.numero_tarjeta, SUM(cm.monto) AS total_cuotas
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+GROUP BY t.numero_tarjeta
+HAVING total_cuotas > 3000;
 
 
 
