@@ -19,8 +19,11 @@ BEGIN
 
 END;
 //
+
 DELIMITER //
+
 DROP FUNCTION  func_cal_cuota_man//
+
 CREATE FUNCTION func_cal_cuota_man(tarjeta_id_input INT)
 RETURNS VARCHAR(100)
 DETERMINISTIC
@@ -35,6 +38,7 @@ BEGIN
 
     RETURN resultado;
 END;
+
 //
 
 DELIMITER ;
