@@ -2,44 +2,95 @@ use banco;
 
 --CONSULTAS BASICAS
 
-select T.tarjeta_id, T.numero_tarjeta,  SUM(C.monto) as total from tarjeta T 
-join cuota_manejo C
-on T.tarjeta_id = C.tarjeta_id
-group by T.tarjeta_id ;
+--#1 Imprime tarjeta_id, numero_tarjeta y total.
+SELECT T.tarjeta_id, T.numero_tarjeta,  SUM(C.monto) as total from tarjeta T 
+JOIN cuota_manejo C
+ON T.tarjeta_id = C.tarjeta_id
+GROUP BY T.tarjeta_id ;
 
+--#2 Imprime nombre, historial_id, tarjeta_id, cuota_manejo_id, pago_id y fecha_pago de Mateo.
+SELECT c.nombre, historial.* 
+FROM cliente c
+JOIN tarjeta t 
+ON c.cliente_id = t.cliente_id 
+JOIN historial_pago historial 
+ON t.tarjeta_id = historial.tarjeta_id
+WHERE c.nombre =  'Mateo';
 
-select c.nombre, historial.* 
-from cliente c
-join tarjeta t 
-on c.cliente_id = t.cliente_id 
-join historial_pago historial 
-on t.tarjeta_id = historial.tarjeta_id
-where c.nombre =  'Mateo';
-
-
+--#3. Imprime cuota_manejo_id, tarjeta_id, fecha_cuota, monto y estado_pago de las cuotas pagadas.
 SELECT cm.*
 FROM cuota_manejo cm 
 WHERE MONTH(cm.fecha_cuota) = 3;
 
-select c.nombre, tt.descuento
-from tarjeta t
-join cliente c 
-on t.cliente_id = c.cliente_id
-join cuota_manejo cm 
-on t.tarjeta_id = cm.tarjeta_id
-join tipo_tarjeta tt
-on t.tipo_tarjeta_id = tt.tipo_tarjeta_id
-where tt.descuento = '15.00'
-group by c.nombre;
+--#4. Imprime nombre y el descuento de las tarjetas con descuento del 15.00.
+SELECT c.nombre, tt.descuento
+FROM tarjeta t
+JOIN cliente c 
+ON t.cliente_id = c.cliente_id
+JOIN cuota_manejo cm 
+ON t.tarjeta_id = cm.tarjeta_id
+JOIN tipo_tarjeta tt
+ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+WHERE tt.descuento = '15.00'
+GROUP BY c.nombre;
 
+--#5. Imprime fecha_cuota, tarjeta_id y número_tarjeta
+SELECT cm.fecha_cuota, t.tarjeta_id, t.numero_tarjeta
+FROM cuota_manejo cm
+JOIN tarjeta t
+ON cm.tarjeta_id = t.tarjeta_id
+JOIN historial_pago historial
+ON t.tarjeta_id = historial.tarjeta_id
+WHERE month (cm.fecha_cuota) = 3;
 
-select cm.fecha_cuota, t.tarjeta_id, t.numero_tarjeta
-from cuota_manejo cm
-join tarjeta t
-on cm.tarjeta_id = t.tarjeta_id
-join historial_pago historial
-on t.tarjeta_id = historial.tarjeta_id
-where month (cm.fecha_cuota) = 3;
+--#6. Imprime la tarjeta_id, numero_tarjeta y total de la tarjeta con id 1.
+SELECT T.tarjeta_id, T.numero_tarjeta,  SUM(C.monto) as total from tarjeta T 
+JOIN cuota_manejo C
+ON T.tarjeta_id = C.tarjeta_id
+WHERE T.tarjeta_id = '1';
+
+--#7. Imprime el nombre, numero_tarjeta y total de todo lo de usuarios
+SELECT * FROM cliente;
+
+--8. Imprime el los clientes que tienen correo electrónico de gmail.
+SELECT * FROM cliente WHERE correo_electronico LIKE '%gmail.com';
+
+--#9. Imrpime cuantos clientes hay registrados.
+SELECT COUNT(*) AS total_clientes FROM cliente;
+
+--#10. Obtiene los primeros 5 clientes ordenados por cliente_id de forma ascendente.
+SELECT * FROM cliente ORDER BY cliente_id ASC LIMIT 5;
+
+--#11. Imprime el nombre del cliente y el número de cuenta.
+SELECT c.nombre, cu.numero_cuenta
+FROM cliente c 
+JOIN cuenta cu
+ON c.cliente_id = cu.cliente_id
+WHERE c.cliente_id = 1;
+
+--12. Muestra los clientes con el total de cuotas por deber.
+SELECT c.nombre AS nombre_cliente, SUM(cm.monto) AS total_pendiente 
+FROM cliente c
+JOIN tarjeta t 
+ON c.cliente_id = t.cliente_id
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.estado_pago = 'pendiente'
+GROUP BY c.nombre;
+
+--#13. Número de pagos realizados por cada cliente.
+SELECT c.nombre, COUNT(h.pago_id) AS total_pagos
+FROM cliente c
+JOIN tarjeta t 
+ON c.cliente_id = t.cliente_id
+JOIN historial_pago h ON t.tarjeta_id = h.tarjeta_id
+GROUP BY c.nombre;
+
+--#14. Muestra los clientes con más de una tarjeta registrada.
+SELECT c.nombre, COUNT(t.tarjeta_id) AS total_tarjetas
+FROM cliente c
+JOIN tarjeta t ON c.cliente_id = t.cliente_id
+GROUP BY c.nombre
+HAVING COUNT(t.tarjeta_id) > 1;
 
 
 --CONSULTAS AVANZADAS
