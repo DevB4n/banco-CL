@@ -92,6 +92,44 @@ JOIN tarjeta t ON c.cliente_id = t.cliente_id
 GROUP BY c.nombre
 HAVING COUNT(t.tarjeta_id) > 1;
 
+--#15. Imprime el cliente que no tenga cuenta registrada.
+SELECT c.nombre
+FROM cliente c
+LEFT JOIN cuenta cu ON c.cliente_id = cu.cliente_id
+WHERE cu.cuenta_id IS NULL;
+
+--#16. Muestra el número de tarjeta y el total pagado de las tarjetas que tienen cuotas pagadas.
+SELECT t.numero_tarjeta, SUM(cm.monto) AS total_pagado
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.estado_pago = 'pagado'
+GROUP BY t.numero_tarjeta;
+
+--#17. ¿Cuántas cuotas de manejo hay por tarjeta?
+SELECT t.numero_tarjeta, COUNT(cm.cuota_manejo_id) AS total_cuotas
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+GROUP BY t.numero_tarjeta;
+
+--#18.  Total de clientes por tipo de tarjeta.
+SELECT tt.nombre, COUNT(DISTINCT c.cliente_id) AS total_clientes
+FROM cliente c
+JOIN tarjeta t ON c.cliente_id = t.cliente_id
+JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+GROUP BY tt.nombre;
+
+--#19. Muestra todas las cuotas vencidas antes de la fecha actual.
+SELECT cm.*
+FROM cuota_manejo cm
+WHERE cm.fecha_cuota < CURDATE() AND cm.estado_pago = 'pendiente';
+
+
+--#20. Clientes a los cuales su nombre inicia por la letra 'S'.
+SELECT *
+FROM cliente
+WHERE nombre LIKE 'S%';
+
+
 
 --CONSULTAS AVANZADAS
 
