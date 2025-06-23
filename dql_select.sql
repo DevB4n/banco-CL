@@ -193,6 +193,61 @@ FROM tarjeta t
 JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
 WHERE cm.estado_pago = 'pendiente';
 
+--#31. Muestra las tarjetas con el monto promedio de sus cuotas.
+SELECT t.numero_tarjeta, AVG(cm.monto) AS promedio
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+GROUP BY t.numero_tarjeta;
+
+--#32. Muestra el pago más alto registrado
+SELECT * 
+FROM cuota_manejo 
+WHERE monto = (
+    SELECT MAX(monto) FROM cuota_manejo
+);
+ORDER BY monto DESC 
+LIMIT 1;
+
+--#33. Muestra los nombres de los clientes ordenados de manera DESC.
+SELECT * FROM cliente
+ORDER BY nombre DESC;
+
+--#34. Muestra los nombres de los clientes ordenados de manera ASC.
+SELECT * FROM cliente
+ORDER BY nombre ASC;
+
+--#35. Muestra los pagos hechos por la tarjeta con número '4000123410010010'.
+SELECT h.*
+FROM historial_pago h
+JOIN tarjeta t ON h.tarjeta_id = t.tarjeta_id
+WHERE t.numero_tarjeta = '4000123410010010';
+
+--#36. Muestra los clientes cuyo nombre tiene exactamente 5 caracteres.
+SELECT * FROM cliente
+WHERE LENGTH(nombre) = 5;
+
+--#37. Muestra todas las cuentas registradas en febrero.
+SELECT *
+FROM tarjeta
+WHERE MONTH(fecha_apertura) = 2;
+
+
+--#38. Mostrar las cuotas cuyo monto es múltiplo de 500.
+SELECT cm.cuota_manejo_id, cm.monto
+FROM cuota_manejo cm
+WHERE monto % 500 = 0;
+
+--#39. Muestra el nombre de los clientes que contengan la letra 'v'.
+SELECT * FROM cliente
+WHERE nombre LIKE '%v%';
+
+--#40. Se muestran los 3 clientes más recientes registrados limitando el resultado a 3.
+SELECT * FROM cliente
+ORDER BY cliente_id DESC
+LIMIT 3;
+
+
+
 
 --CONSULTAS AVANZADAS
 
