@@ -129,6 +129,69 @@ SELECT *
 FROM cliente
 WHERE nombre LIKE 'S%';
 
+--#21. Muestra las tarjetas sin historial de pagos.
+SELECT t.numero_tarjeta
+FROM tarjeta t
+LEFT JOIN historial_pago h 
+ON t.tarjeta_id = h.tarjeta_id
+WHERE h.pago_id IS NULL;
+
+
+--#22. Muestra el número de tarjeta y suma los valores de monto de todas las cuotas que sean mayores o iguales a 1000.
+SELECT t.numero_tarjeta, SUM(cm.monto) AS total_cuotas
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.monto >= 1000
+GROUP BY t.numero_tarjeta;
+
+
+--23. Muestra las tarjetas y cuántas veces han sido pagadas.
+SELECT t.numero_tarjeta, COUNT(cm.cuota_manejo_id) AS cuotas_pagadas
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.estado_pago = 'pagado'
+GROUP BY t.numero_tarjeta;
+
+--#24. Clientes con cuotas pagadas en abril
+SELECT t.numero_tarjeta
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.estado_pago = 'pagado' AND MONTH(cm.fecha_cuota) = 4;
+
+--#25. Total de pagos registrados en el historial de pagos.
+SELECT COUNT(*) AS total_pagos
+FROM historial_pago;
+
+--#26. Muestra los clientes con tarjetas tipo 'Joven'.
+SELECT DISTINCT c.nombre
+FROM cliente c
+JOIN tarjeta t ON c.cliente_id = t.cliente_id
+JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+WHERE tt.nombre = 'Joven';
+
+--#27. Muestra los clientes cuyo descuento es menor a 10.
+SELECT t.numero_tarjeta, tt.descuento
+FROM tarjeta t
+JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+WHERE tt.descuento < 10;
+
+--#28. Muestra los clientes cuyo descuento es mayor a 13.
+SELECT t.numero_tarjeta, tt.descuento
+FROM tarjeta t
+JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+WHERE tt.descuento > 13;
+
+--#29. Muestra la fecha de la primera cuota de cada tarjeta.
+SELECT t.numero_tarjeta, MIN(cm.fecha_cuota) AS primera_cuota
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+GROUP BY t.numero_tarjeta;
+
+--30. Muestra tarjetas con cuotas pendientes de pago.
+SELECT DISTINCT t.numero_tarjeta
+FROM tarjeta t
+JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+WHERE cm.estado_pago = 'pendiente';
 
 
 --CONSULTAS AVANZADAS
