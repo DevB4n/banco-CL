@@ -1,9 +1,9 @@
--- Active: 1750767311765@@127.0.0.1@3307
+-- Active: 1750797344155@@127.0.0.1@3307@mysql
 USE banco;
 
 --#1. Registrar una nueva cuota de manejo calculando automáticamente el descuento.
 
-
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE registrar_cuota_manejo (
     IN p_tarjeta_id INT,
@@ -33,6 +33,7 @@ DELIMITER ;
 CALL registrar_cuota_manejo();
 
 --#2. Obtiene los empleados
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE obtener_clientes(IN id_cliente INT)
 BEGIN 
@@ -45,7 +46,7 @@ CALL obtener_clientes(1);
 
 
 --#3. Procesar un pago para una tarjeta específica, actualizando el estado de la cuota de manejo.
-
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE procesar_pago_tarjeta (
     IN id_tarjeta INT,
@@ -87,7 +88,7 @@ CALL procesar_pago_tarjeta(1, 6000.00, '2023-10-01 10:00:00');
 
 
 --#4. Generar reportes mensuales de cuotas de manejo.
-
+USE banco;
 DELIMITER $$ 
 CREATE PROCEDURE reporte_menusual(
     IN mes INT,
@@ -108,6 +109,7 @@ DELIMITER ;
 CALL reporte_menusual(10, 2023);
 
 --#5. Actualizar los descuentos en caso de cambios en las políticas bancarias.
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE actualizar_descuento (
     IN tipo_tarjeta_int INT,
@@ -140,7 +142,7 @@ CALL actualizar_descuento(1, 15.00);
 
 
 --#6. Registrar nuevos clientes y tarjetas automáticamente con los datos de apertura.DROP PROCEDURE IF EXISTS registrar_nuevo_cliente;
-
+USE banco;
 DELIMITER $$
 
 CREATE PROCEDURE registrar_nuevo_cliente (
@@ -214,6 +216,7 @@ CALL registrar_nuevo_cliente(
 );
 
 --#7. Actualiza el estado de las cuentas vencidas.
+USE banco;
 DELIMITER $$
 
 CREATE PROCEDURE estado_cuotas()
@@ -229,6 +232,7 @@ CALL estado_cuotas();
 
 
 --#8. listar las cuotas de manejo de un cliente según su identificación.
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE listar_cuotas_cliente(
     IN identificacion VARCHAR(100)
@@ -244,7 +248,7 @@ DELIMITER ;
 CALL listar_cuotas_cliente('1078912345');
 
 --9. Actualiza correo, celular o ambos de un cliente según su identificación.
-
+USE banco;
 DELIMITER $$
 
 CREATE PROCEDURE actualizar_datos_cliente(
@@ -265,6 +269,7 @@ CALL actualizar_datos_cliente('1078912345', '3009876543', 'nuevo@email.com');
 
 
 --#10. 
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE reporte_cliente(
     IN monto_limite DECIMAL(10,2)
@@ -281,6 +286,7 @@ CALL reporte_cliente(260000.00);
 
 
 --11. Transferir saldo entre cuentas de diferentes clientes
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE transferir_entre_cuentas(
     IN cuenta_origen VARCHAR(20),
@@ -321,6 +327,7 @@ CALL transferir_entre_cuentas('1001000001', '1001000002', 50000, 'Pago préstamo
 
 
 -- #12. Calcular comisiones por transacciones según tipo de cuenta
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE calcular_comision_transaccion(
     IN cuenta_id INT,
@@ -354,6 +361,7 @@ CALL calcular_comision_transaccion(3, 'consignacion', 50000);
 
 
 --13. Genera un estado detallado de la cuenta de un cliente en específico durante un tiempo
+USE banco;
 DELIMITER $$
 CREATE PROCEDURE generar_estado_cuenta(
   IN numero_cuenta VARCHAR(20),
@@ -372,7 +380,7 @@ BEGIN
          c.numero_cuenta, c.tipo_cuenta, c.saldo AS saldo_actual,
          ct.fecha_cuota, ct.monto, ct.estado_pago
   FROM cliente cl
-  JOIN cuenta c ON cl.cliente_id = c.cliente_id
+  JOIN cuenta c ON cl.cliente_id = c.cliente_ids
   JOIN tarjeta t ON t.cuenta_id = c.cuenta_id
   JOIN cuota_manejo ct ON ct.tarjeta_id = t.tarjeta_id
   WHERE c.numero_cuenta = numero_cuenta
@@ -386,4 +394,158 @@ DELIMITER ;
 CALL generar_estado_cuenta('1001000001', '2025-03-01 00:00:00', '2025-05-31 23:59:59');
 
 
---14. 
+--14. Calcular el descuento según el tipo de cuenta
+USE banco;
+DELIMITER $$
+CREATE PROCEDURE calcular_descuento(
+    IN num_tarjeta VARCHAR(20),
+    IN monto_original DECIMAL(10,2),
+    OUT descuento_aplicado DECIMAL (10,2),
+    OUT monto_final DECIMAL (10,2)
+)
+BEGIN
+    DECLARE descuento_porcentaje DECIMAL(5,2) DEFAULT 0;
+
+    SELECT tt.descuento
+    INTO descuento_porcentaje
+    FROM tarjeta t
+    JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+    WHERE t.numero_tarjeta = num_tarjeta;
+
+    SET descuento_aplicado = ROUND(monto_original * (descuento_porcentaje / 100),2);
+    SET monto_final = monto_original - descuento_aplicado;
+END$$
+
+DELIMITER ;
+CALL calcular_descuento('4000123410010001', 200000.00, @descuento, @total);
+SELECT @descuento; --esto para imprimir el out
+SELECT @total;
+
+--15. Consultar tarjetas vinculadas a un cliente Devuelve todos los datos de tarjetas que posee un cliente específico.
+USE banco;
+DELIMITER $$
+CREATE PROCEDURE tarjetas_vinculadas(
+    IN cliente_id VARCHAR(10)
+)
+BEGIN
+    SELECT 
+    t.numero_tarjeta, 
+    t.tipo_tarjeta_id, 
+    t.cliente_id, 
+    t.fecha_apertura,
+    t.monto_apertura, 
+    t.saldo
+    FROM cliente cl
+    JOIN tarjeta t ON cl.cliente_id = t.cliente_id
+    WHERE cl.cliente_id = cliente_id;
+END $$
+
+DELIMITER;
+CALL tarjetas_vinculadas('5');
+
+--#16. Cuántas tarjetas hay por la categoría joven
+USE banco;
+DELIMITER $$
+
+CREATE PROCEDURE tarjetas_activas_joven(
+    IN nombre_tipo_tarjeta ENUM('joven', 'nomina', 'visa')
+)
+BEGIN
+    SELECT 
+        t.numero_tarjeta,
+        tt.nombre AS tipo_tarjeta
+    FROM tarjeta t
+    JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+    WHERE tt.nombre = nombre_tipo_tarjeta;
+END $$
+
+DELIMITER ;
+
+CALL tarjetas_activas_joven('1');
+
+--#17. Cuántas tarjetas hay por la categoría nomina con su fecha y saldo
+USE banco;
+DELIMITER $$
+
+CREATE PROCEDURE tarjetas_activas_nomina(
+    IN nombre_tipo_tarjeta ENUM('joven', 'nomina', 'visa')
+)
+BEGIN
+    SELECT 
+        t.numero_tarjeta,
+        t.fecha_apertura,
+        t.saldo,
+        tt.nombre AS tipo_tarjeta
+    FROM tarjeta t
+    JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+    WHERE tt.nombre = nombre_tipo_tarjeta;
+END $$
+
+DELIMITER ;
+
+CALL tarjetas_activas_nomina('2');
+
+
+--#18. Cuántas tarjetas hay por la categoría visa con el cliente_id, monto_apertura y saldo
+USE banco;
+DELIMITER $$
+
+CREATE PROCEDURE tarjetas_activas_visa(
+    IN nombre_tipo_tarjeta ENUM('joven', 'nomina', 'visa')
+)
+BEGIN
+    SELECT 
+        t.numero_tarjeta,
+        t.monto_apertura,
+        t.saldo,
+        tt.nombre AS tipo_tarjeta
+    FROM tarjeta t
+    JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+    WHERE tt.nombre = nombre_tipo_tarjeta;
+END $$
+
+DELIMITER ;
+CALL tarjetas_activas_visa('3');
+
+--·19. Generar reporte de ingresos por tipo de tarjeta sumando los pagos recibidios en c/u.
+USE banco;
+DELIMITER $$
+
+CREATE PROCEDURE ingresos_por_tipo_tarjeta()
+BEGIN
+  SELECT 
+    tt.nombre AS tipo_tarjeta,
+    SUM(cm.monto) AS total_ingresos
+  FROM cuota_manejo cm
+  JOIN tarjeta t ON cm.tarjeta_id = t.tarjeta_id
+  JOIN tipo_tarjeta tt ON t.tipo_tarjeta_id = tt.tipo_tarjeta_id
+  WHERE cm.estado_pago = 'pagado'
+  GROUP BY tt.nombre
+  ORDER BY total_ingresos DESC;
+END $$
+
+DELIMITER ;
+CALL ingresos_por_tipo_tarjeta();
+
+--#20. Listar transacciones por rango de fecha y por un cliente
+USE banco;
+DELIMITER $$
+CREATE PROCEDURE listar_transacciones(
+    IN cliente_ID INT,
+    IN fecha_inicio DATETIME
+)
+BEGIN 
+    SELECT 
+        t.cliente_id, 
+        t.fecha_apertura, 
+        t.monto_apertura
+    FROM tarjeta t
+    WHERE t.cliente_id = cliente_ID
+      AND t.fecha_apertura >= fecha_inicio
+    ORDER BY t.fecha_apertura ASC;
+END $$
+
+DELIMITER ;
+DROP PROCEDURE listar_transacciones;
+
+CALL listar_transacciones(1, '2024-01-15');

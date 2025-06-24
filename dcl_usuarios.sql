@@ -1,3 +1,4 @@
+-- Active: 1750797344155@@127.0.0.1@3307@mysql
 CREATE USER 'administrador'@'localhost' IDENTIFIED BY 'administrador';
 CREATE USER 'operador_pagos'@'localhost' IDENTIFIED BY 'operador_pagos';
 CREATE USER 'gerente'@'localhost' IDENTIFIED BY 'gerente';

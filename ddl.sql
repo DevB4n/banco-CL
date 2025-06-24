@@ -1,4 +1,4 @@
--- Active: 1750767311765@@127.0.0.1@3307
+-- Active: 1750797344155@@127.0.0.1@3307@mysql
 create database if not exists banco;
 use banco;
 

@@ -1,4 +1,4 @@
--- Active: 1750767311765@@127.0.0.1@3307
+-- Active: 1750797344155@@127.0.0.1@3307@mysql
 use banco;
 -- cliente
 INSERT INTO cliente (identificacion, nombre, apellido, celular, correo_electronico) values
