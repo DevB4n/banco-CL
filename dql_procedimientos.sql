@@ -546,6 +546,5 @@ BEGIN
 END $$
 
 DELIMITER ;
-DROP PROCEDURE listar_transacciones;
 
 CALL listar_transacciones(1, '2024-01-15');
