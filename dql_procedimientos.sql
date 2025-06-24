@@ -255,3 +255,16 @@ CALL actualizar_datos_cliente('1078912345', '3009876543', 'nuevo@email.com');
 
 
 --#10. 
+DELIMITER $$
+CREATE PROCEDURE reporte_cliente(
+    IN monto_limite DECIMAL(10,2)
+)
+BEGIN
+    SELECT c.nombre, c.apellido, t.saldo
+    FROM cliente c
+    JOIN tarjeta t ON c.cliente_id = t.cliente_id
+    WHERE t.saldo < monto_limite;
+END $$
+DELIMITER ;
+
+CALL reporte_cliente(100000.00);
