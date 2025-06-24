@@ -140,59 +140,60 @@ CALL actualizar_descuento(1, 15.00);
 DELIMITER $$
 
 CREATE PROCEDURE registrar_nuevo_cliente (
-    IN p_nombre VARCHAR(100),
-    IN p_apellido VARCHAR(100),
-    IN p_identificacion VARCHAR(100),
-    IN p_celular VARCHAR(20),
-    IN p_correo_electronico VARCHAR(50),
-    IN p_numero_tarjeta VARCHAR(20),
-    IN p_tipo_tarjeta_id INT,
-    IN p_cuenta_id INT,
-    IN p_fecha_apertura DATE,
-    IN p_monto_apertura DECIMAL(10,2),
-    IN p_saldo DECIMAL(10,2)
+    IN nombre VARCHAR(100),
+    IN apellido VARCHAR(100),
+    IN identificacion VARCHAR(100),
+    IN celular VARCHAR(20),
+    IN email VARCHAR(50),
+    IN numero_tarjeta VARCHAR(20),
+    IN tipo_tarjeta_id INT,
+    IN cuenta_id INT,
+    IN fecha_apertura DATE,
+    IN monto_apertura DECIMAL(10,2),
+    IN saldo DECIMAL(10,2)
 )
 BEGIN
     DECLARE cliente_existente INT;
-    DECLARE v_tipo_tarjeta_existente INT;
-    DECLARE v_cuenta_existente INT;
+    DECLARE tipo_tarjeta_existente INT;
+    DECLARE cuenta_existente INT;
 
    
     SELECT COUNT(*) INTO cliente_existente
     FROM cliente
-    WHERE identificacion = p_identificacion;
+    WHERE identificacion = identificacion;
 
   
-    SELECT COUNT(*) INTO v_tipo_tarjeta_existente
+    SELECT COUNT(*) INTO tipo_tarjeta_existente
     FROM tipo_tarjeta
-    WHERE tipo_tarjeta_id = p_tipo_tarjeta_id;
+    WHERE tipo_tarjeta_id = tipo_tarjeta_id;
 
-    SELECT COUNT(*) INTO v_cuenta_existente
+    SELECT COUNT(*) INTO cuenta_existente
     FROM cuenta
-    WHERE cuenta_id = p_cuenta_id;
+    WHERE cuenta_id = cuenta_id;
 
    
     IF cliente_existente > 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El cliente ya está registrado con esa identificación.';
-    ELSEIF v_tipo_tarjeta_existente = 0 THEN
+    ELSEIF tipo_tarjeta_existente = 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Tipo de tarjeta no válido.';
-    ELSEIF v_cuenta_existente = 0 THEN
+    ELSEIF cuenta_existente = 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Cuenta no válida.';
     ELSE
        
         INSERT INTO cliente (nombre, apellido, identificacion, celular, correo_electronico)
-        VALUES (p_nombre, p_apellido, p_identificacion, p_celular, p_correo_electronico);
+        VALUES (nombre, apellido, identificacion, celular, email);
 
        
         INSERT INTO tarjeta (numero_tarjeta, tipo_tarjeta_id, cliente_id, cuenta_id, fecha_apertura, monto_apertura, saldo)
-        VALUES (p_numero_tarjeta, p_tipo_tarjeta_id, LAST_INSERT_ID(), p_cuenta_id, p_fecha_apertura, p_monto_apertura, p_saldo);
+        VALUES (numero_tarjeta, tipo_tarjeta_id, LAST_INSERT_ID(), cuenta_id, fecha_apertura, monto_apertura, saldo);
     END IF;
 END $$
 
 DELIMITER ;
+
 
 CALL registrar_nuevo_cliente(
     'Juan',             -- nombre
@@ -208,4 +209,49 @@ CALL registrar_nuevo_cliente(
     500000.00           -- saldo
 );
 
---#7. 
+--#7. Actualiza el estado de las cuentas vencidas.
+DELIMITER $$
+
+CREATE PROCEDURE estado_cuotas()
+BEGIN
+    UPDATE cuota_manejo
+    SET estado_pago = 'vencido'
+    WHERE fecha_cuota < CURDATE() AND estado_pago = 'pendiente';
+END $$
+
+DELIMITER ;
+
+CALL estado_cuotas();
+
+--#8. listar las cuotas de manejo de un cliente según su identificación.
+DELIMITER $$
+CREATE PROCEDURE listar_cuotas_cliente(
+    IN identificacion VARCHAR(100)
+)
+BEGIN
+    SELECT cm.*
+    FROM cliente c
+    JOIN tarjeta t ON c.cliente_id = t.cliente_id
+    JOIN cuota_manejo cm ON t.tarjeta_id = cm.tarjeta_id
+    WHERE c.identificacion = identificacion;
+END $$
+DELIMITER ;
+CALL listar_cuotas_cliente('1078912345');
+
+--9. Actualiza correo, celular o ambos de un cliente según su identificación.
+CREATE PROCEDURE actualizar_datos_cliente(
+    IN identificacion VARCHAR(100),
+    IN nuevo_celular VARCHAR(20),
+    IN nuevo_correo VARCHAR(50)
+)
+BEGIN
+    UPDATE cliente
+    SET celular = nuevo_celular,
+        correo_electronico = nuevo_correo
+    WHERE identificacion = identificacion;
+END $$
+DELIMITER ;
+CALL actualizar_datos_cliente('1078912345', '3009876543', 'nuevo@email.com');
+
+
+--#10. 
