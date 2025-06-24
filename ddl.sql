@@ -1,3 +1,4 @@
+-- Active: 1750767311765@@127.0.0.1@3307
 create database if not exists banco;
 use banco;
 
