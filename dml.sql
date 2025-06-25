@@ -386,3 +386,233 @@ INSERT INTO historial_pago (tarjeta_id, cuota_manejo_id, pago_id, fecha_pago) VA
 (28, 82, 22, '2025-05-03 17:20:00'),
 (29, 85, 23, '2025-03-01 07:50:00');
 
+
+
+--INSERCIONES LUEGO DE LOS TRES TRISTES TRIGGERS
+
+-- INSERCIONES ADICIONALES PARA COMPLETAR 50 REGISTROS POR TABLA
+-- Teniendo en cuenta los triggers existentes
+
+USE banco;
+
+-- ============================================
+-- CLIENTES (25 adicionales para completar 50)
+-- ============================================
+INSERT INTO cliente (identificacion, nombre, apellido, celular, correo_electronico) VALUES
+('1334567891', 'Alejandra', 'Montoya', '3125467891', 'alejandra.montoya@gmail.com'),
+('1345678902', 'Ricardo', 'Bedoya', '3136578902', 'ricardo.bedoya@hotmail.com'),
+('1356789013', 'Paulina', 'Cárdenas', '3147689013', 'paulina.cardenas@yahoo.com'),
+('1367890124', 'Diego', 'Ospina', '3158790124', 'diego.ospina@outlook.com'),
+('1378901235', 'Natalia', 'Restrepo', '3169801235', 'natalia.restrepo@gmail.com'),
+('1389012346', 'Camilo', 'Zuluaga', '3170912346', 'camilo.zuluaga@icloud.com'),
+('1390123457', 'Andrea', 'Giraldo', '3181023457', 'andrea.giraldo@live.com'),
+('1401234568', 'Miguel', 'Arango', '3192134568', 'miguel.arango@protonmail.com'),
+('1412345679', 'Carolina', 'Velásquez', '3103245679', 'carolina.velasquez@gmail.com'),
+('1423456780', 'Andrés', 'Quintero', '3114356780', 'andres.quintero@hotmail.com'),
+('1434567891', 'Valeria', 'Agudelo', '3125467891', 'valeria.agudelo@yahoo.com'),
+('1445678902', 'Sebastián', 'Ramírez', '3136578902', 'sebastian.ramirez@outlook.com'),
+('1456789013', 'Gabriela', 'Londoño', '3147689013', 'gabriela.londono@gmail.com'),
+('1467890124', 'Alejandro', 'Henao', '3158790124', 'alejandro.henao@live.com'),
+('1478901235', 'Mónica', 'García', '3169801235', 'monica.garcia@icloud.com'),
+('1489012346', 'Daniel', 'Correa', '3170912346', 'daniel.correa@gmail.com'),
+('1490123457', 'Tatiana', 'Villa', '3181023457', 'tatiana.villa@hotmail.com'),
+('1501234568', 'Luis', 'Betancur', '3192134568', 'luis.betancur@yahoo.com'),
+('1512345679', 'Paola', 'Jaramillo', '3103245679', 'paola.jaramillo@outlook.com'),
+('1523456780', 'Jorge', 'Castrillón', '3114356780', 'jorge.castrillon@gmail.com'),
+('1534567891', 'Marcela', 'Echeverri', '3125467891', 'marcela.echeverri@live.com'),
+('1545678902', 'Fernando', 'Mesa', '3136578902', 'fernando.mesa@protonmail.com'),
+('1556789013', 'Viviana', 'Cardona', '3147689013', 'viviana.cardona@gmail.com'),
+('1567890124', 'Álvaro', 'Upegui', '3158790124', 'alvaro.upegui@hotmail.com'),
+('1578901235', 'Liliana', 'Posada', '3169801235', 'liliana.posada@icloud.com');
+
+-- ============================================
+-- CUENTAS (25 adicionales)
+-- NOTA: Las cuentas se crean automáticamente por el trigger trg_crear_cuenta_nuevo_cliente
+-- Pero vamos a insertar algunas adicionales manualmente para tener variedad
+-- ============================================
+INSERT INTO cuenta (numero_cuenta, tipo_cuenta, saldo, cliente_id) VALUES
+('1002000031', 'corriente', 450000.00, 31),
+('1002000032', 'ahorros', 380000.00, 32),
+('1002000033', 'corriente', 520000.00, 33),
+('1002000034', 'ahorros', 290000.00, 34),
+('1002000035', 'corriente', 670000.00, 35),
+('1002000036', 'ahorros', 190000.00, 36),
+('1002000037', 'corriente', 580000.00, 37),
+('1002000038', 'ahorros', 340000.00, 38),
+('1002000039', 'corriente', 420000.00, 39),
+('1002000040', 'ahorros', 310000.00, 40),
+('1002000041', 'corriente', 490000.00, 41),
+('1002000042', 'ahorros', 260000.00, 42),
+('1002000043', 'corriente', 550000.00, 43),
+('1002000044', 'ahorros', 370000.00, 44),
+('1002000045', 'corriente', 440000.00, 45),
+('1002000046', 'ahorros', 200000.00, 46),
+('1002000047', 'corriente', 590000.00, 47),
+('1002000048', 'ahorros', 320000.00, 48),
+('1002000049', 'corriente', 460000.00, 49),
+('1002000050', 'ahorros', 280000.00, 50),
+('1003000021', 'corriente', 630000.00, 21), -- Segunda cuenta para cliente existente
+('1003000022', 'ahorros', 180000.00, 22),
+('1003000023', 'corriente', 510000.00, 23),
+('1003000024', 'ahorros', 350000.00, 24),
+('1003000025', 'corriente', 480000.00, 25);
+
+-- ============================================
+-- TARJETAS (25 adicionales para completar 50)
+-- NOTA: Al insertar tarjetas, los triggers automáticamente:
+-- - Generan cuotas de manejo (trigger 3)
+-- - Validan saldo suficiente (trigger 6)
+-- - Actualizan saldo de cuenta (trigger 7)
+-- ============================================
+INSERT INTO tarjeta (numero_tarjeta, tipo_tarjeta_id, cliente_id, cuenta_id, fecha_apertura, monto_apertura, saldo) VALUES
+('4000123410010031', 2, 31, 32, '2023-12-15', 400000.00, 400000.00),
+('4000123410010032', 1, 32, 33, '2024-01-20', 280000.00, 280000.00),
+('4000123410010033', 3, 33, 34, '2023-08-18', 680000.00, 680000.00),
+('4000123410010034', 2, 34, 35, '2024-02-10', 420000.00, 420000.00),
+('4000123410010035', 1, 35, 36, '2023-11-05', 300000.00, 300000.00),
+('4000123410010036', 3, 36, 37, '2024-04-25', 750000.00, 750000.00),
+('4000123410010037', 2, 37, 38, '2023-09-12', 480000.00, 480000.00),
+('4000123410010038', 1, 38, 39, '2024-03-08', 250000.00, 250000.00),
+('4000123410010039', 3, 39, 40, '2024-05-15', 720000.00, 720000.00),
+('4000123410010040', 2, 40, 41, '2023-10-30', 460000.00, 460000.00),
+('4000123410010041', 1, 41, 42, '2024-01-12', 290000.00, 290000.00),
+('4000123410010042', 3, 42, 43, '2023-07-22', 690000.00, 690000.00),
+('4000123410010043', 2, 43, 44, '2024-04-18', 510000.00, 510000.00),
+('4000123410010044', 1, 44, 45, '2023-12-08', 270000.00, 270000.00),
+('4000123410010045', 3, 45, 46, '2024-02-28', 730000.00, 730000.00),
+('4000123410010046', 2, 46, 47, '2023-09-05', 450000.00, 450000.00),
+('4000123410010047', 1, 47, 48, '2024-05-20', 320000.00, 320000.00),
+('4000123410010048', 3, 48, 49, '2023-11-18', 670000.00, 670000.00),
+('4000123410010049', 2, 49, 50, '2024-01-25', 490000.00, 490000.00),
+('4000123410010050', 1, 50, 51, '2023-08-12', 260000.00, 260000.00),
+('4000123410010051', 3, 21, 56, '2024-03-10', 700000.00, 700000.00), -- Segunda tarjeta para cliente existente
+('4000123410010052', 2, 22, 57, '2023-10-15', 440000.00, 440000.00),
+('4000123410010053', 1, 23, 58, '2024-04-05', 310000.00, 310000.00),
+('4000123410010054', 3, 24, 59, '2023-12-20', 680000.00, 680000.00),
+('4000123410010055', 2, 25, 60, '2024-02-15', 470000.00, 470000.00);
+
+-- ============================================
+-- CUOTAS DE MANEJO ADICIONALES
+-- NOTA: Las cuotas se generan automáticamente por el trigger al crear tarjetas
+-- Pero vamos a agregar algunas cuotas adicionales para meses futuros
+-- ============================================
+INSERT INTO cuota_manejo (tarjeta_id, fecha_cuota, monto, estado_pago) VALUES
+-- Cuotas para junio 2025 (tarjetas 1-10)
+(1, '2025-06-01', 6000.00, 'pendiente'),
+(2, '2025-06-01', 10000.00, 'pendiente'),
+(3, '2025-06-01', 14000.00, 'pendiente'),
+(4, '2025-06-01', 5000.00, 'pendiente'),
+(5, '2025-06-01', 9000.00, 'pendiente'),
+(6, '2025-06-01', 12000.00, 'pendiente'),
+(7, '2025-06-01', 4000.00, 'pendiente'),
+(8, '2025-06-01', 9600.00, 'pendiente'),
+(9, '2025-06-01', 13000.00, 'pendiente'),
+(10, '2025-06-01', 4400.00, 'pendiente'),
+
+-- Cuotas para julio 2025 (tarjetas 11-20)
+(11, '2025-07-01', 10200.00, 'pendiente'),
+(12, '2025-07-01', 15000.00, 'pendiente'),
+(13, '2025-07-01', 6000.00, 'pendiente'),
+(14, '2025-07-01', 9400.00, 'pendiente'),
+(15, '2025-07-01', 14400.00, 'pendiente'),
+(16, '2025-07-01', 5600.00, 'pendiente'),
+(17, '2025-07-01', 10000.00, 'pendiente'),
+(18, '2025-07-01', 13800.00, 'pendiente'),
+(19, '2025-07-01', 5200.00, 'pendiente'),
+(20, '2025-07-01', 10400.00, 'pendiente'),
+
+-- Cuotas adicionales para completar 50
+(21, '2025-06-01', 14200.00, 'pendiente'),
+(22, '2025-06-01', 4600.00, 'pendiente'),
+(23, '2025-06-01', 9800.00, 'pendiente'),
+(24, '2025-06-01', 12800.00, 'pendiente'),
+(25, '2025-06-01', 6200.00, 'pendiente');
+
+-- ============================================
+-- PAGOS ADICIONALES (25 más para completar 50)
+-- ============================================
+INSERT INTO pago (fecha_pago, fecha_maxima_pago, monto_pagado, estado) VALUES
+('2025-04-05 09:15:00', '2025-04-10', 8000.00, 'exitoso'),
+('2025-04-08 10:30:00', '2025-04-15', 12000.00, 'exitoso'),
+('2025-04-12 14:20:00', '2025-04-20', 9500.00, 'exitoso'),
+('2025-04-15 16:45:00', '2025-04-25', 11000.00, 'exitoso'),
+('2025-04-18 11:10:00', '2025-04-30', 7500.00, 'exitoso'),
+('2025-04-22 13:35:00', '2025-05-05', 10500.00, 'exitoso'),
+('2025-04-25 15:20:00', '2025-05-10', 8800.00, 'exitoso'),
+('2025-04-28 09:50:00', '2025-05-15', 13500.00, 'exitoso'),
+('2025-05-02 12:25:00', '2025-05-20', 9200.00, 'exitoso'),
+('2025-05-05 14:40:00', '2025-05-25', 10800.00, 'exitoso'),
+('2025-05-08 10:15:00', '2025-05-30', 7800.00, 'exitoso'),
+('2025-05-12 16:30:00', '2025-06-05', 12500.00, 'exitoso'),
+('2025-05-15 11:45:00', '2025-06-10', 9800.00, 'exitoso'),
+('2025-05-18 13:20:00', '2025-06-15', 11200.00, 'exitoso'),
+('2025-05-22 15:10:00', '2025-06-20', 8500.00, 'exitoso'),
+('2025-05-25 09:35:00', '2025-06-25', 10200.00, 'exitoso'),
+('2025-05-28 12:50:00', '2025-06-30', 9600.00, 'exitoso'),
+('2025-06-02 14:15:00', '2025-07-05', 13200.00, 'exitoso'),
+('2025-06-05 16:25:00', '2025-07-10', 8900.00, 'exitoso'),
+('2025-06-08 10:40:00', '2025-07-15', 11500.00, 'exitoso'),
+-- Algunos pagos fallidos
+('2025-06-10 13:00:00', '2025-06-10', 9000.00, 'fallido'),
+('2025-06-12 15:20:00', '2025-06-12', 8500.00, 'fallido'),
+('2025-06-15 11:30:00', '2025-06-15', 10000.00, 'fallido'),
+('2025-06-18 14:45:00', '2025-06-18', 7500.00, 'fallido'),
+('2025-06-20 16:10:00', '2025-06-20', 9500.00, 'fallido');
+
+-- ============================================
+-- PAGO_TARJETA (25 adicionales)
+-- ============================================
+INSERT INTO pago_tarjeta (pago_id, tarjeta_id) VALUES
+(30, 31), (31, 32), (32, 33), (33, 34), (34, 35),
+(35, 36), (36, 37), (37, 38), (38, 39), (39, 40),
+(40, 41), (41, 42), (42, 43), (43, 44), (44, 45),
+(45, 46), (46, 47), (47, 48), (48, 49), (49, 50),
+(50, 21), (51, 22), (52, 23), (53, 24), (54, 25);
+
+-- ============================================
+-- HISTORIAL_PAGO (25 adicionales para completar 50)
+-- NOTA: Algunos se generan automáticamente por triggers
+-- ============================================
+INSERT INTO historial_pago (tarjeta_id, cuota_manejo_id, pago_id, fecha_pago) VALUES
+(31, 91, 30, '2025-04-05 09:15:00'),
+(32, 94, 31, '2025-04-08 10:30:00'),
+(33, 97, 32, '2025-04-12 14:20:00'),
+(34, 100, 33, '2025-04-15 16:45:00'),
+(35, 103, 34, '2025-04-18 11:10:00'),
+(36, 106, 35, '2025-04-22 13:35:00'),
+(37, 109, 36, '2025-04-25 15:20:00'),
+(38, 112, 37, '2025-04-28 09:50:00'),
+(39, 115, 38, '2025-05-02 12:25:00'),
+(40, 118, 39, '2025-05-05 14:40:00'),
+(41, 121, 40, '2025-05-08 10:15:00'),
+(42, 124, 41, '2025-05-12 16:30:00'),
+(43, 127, 42, '2025-05-15 11:45:00'),
+(44, 130, 43, '2025-05-18 13:20:00'),
+(45, 133, 44, '2025-05-22 15:10:00'),
+(46, 136, 45, '2025-05-25 09:35:00'),
+(47, 139, 46, '2025-05-28 12:50:00'),
+(48, 142, 47, '2025-06-02 14:15:00'),
+(49, 145, 48, '2025-06-05 16:25:00'),
+(50, 148, 49, '2025-06-08 10:40:00'),
+(21, 151, 50, '2025-06-10 13:00:00'),
+(22, 152, 51, '2025-06-12 15:20:00'),
+(23, 153, 52, '2025-06-15 11:30:00'),
+(24, 154, 53, '2025-06-18 14:45:00'),
+(25, 155, 54, '2025-06-20 16:10:00');
+
+-- ============================================
+-- VERIFICACIÓN DE REGISTROS
+-- ============================================
+SELECT 'Clientes' as tabla, COUNT(*) as total FROM cliente
+UNION ALL
+SELECT 'Cuentas', COUNT(*) FROM cuenta
+UNION ALL
+SELECT 'Tarjetas', COUNT(*) FROM tarjeta
+UNION ALL
+SELECT 'Cuotas de Manejo', COUNT(*) FROM cuota_manejo
+UNION ALL
+SELECT 'Pagos', COUNT(*) FROM pago
+UNION ALL
+SELECT 'Pago-Tarjeta', COUNT(*) FROM pago_tarjeta
+UNION ALL
+SELECT 'Historial Pago', COUNT(*) FROM historial_pago;
