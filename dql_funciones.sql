@@ -1,3 +1,4 @@
+-- Active: 1748981230048@@127.0.0.1@3307@banco_cl
 --Calcular la cuota de manejo para un cliente según su tipo de tarjeta y monto de apertura.
 
 USE banco;

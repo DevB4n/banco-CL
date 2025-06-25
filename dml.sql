@@ -1,4 +1,4 @@
--- Active: 1750797344155@@127.0.0.1@3307@mysql
+-- Active: 1748981230048@@127.0.0.1@3307@banco_cl
 use banco;
 -- cliente
 INSERT INTO cliente (identificacion, nombre, apellido, celular, correo_electronico) values
@@ -385,5 +385,4 @@ INSERT INTO historial_pago (tarjeta_id, cuota_manejo_id, pago_id, fecha_pago) VA
 (27, 79, 21, '2025-03-03 11:00:00'),
 (28, 82, 22, '2025-05-03 17:20:00'),
 (29, 85, 23, '2025-03-01 07:50:00');
-
 

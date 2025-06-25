@@ -1,4 +1,4 @@
--- Active: 1750797344155@@127.0.0.1@3307@mysql
+-- Active: 1748981230048@@127.0.0.1@3307@banco_cl
 USE banco;
 
 --#1. Registrar una nueva cuota de manejo calculando automáticamente el descuento.
@@ -548,3 +548,5 @@ END $$
 DELIMITER ;
 
 CALL listar_transacciones(1, '2024-01-15');
+
+

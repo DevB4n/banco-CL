@@ -1,5 +1,5 @@
 -- TABLAS AUXILIARES
-
+USE banco;
 -- Tabla para auditoría de clientes (necesaria para trigger 10)
 CREATE TABLE IF NOT EXISTS auditoria_cliente (
     auditoria_id INT AUTO_INCREMENT PRIMARY KEY,
