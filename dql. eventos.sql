@@ -335,4 +335,60 @@ DELIMITER ;
 
 SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'aumentar_limite_credito'
 
---#18.
+--#18. Aplica cargo adicional
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS penalizar_moras
+ON SCHEDULE EVERY 1 DAY
+  STARTS '2025-07-01 04:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Aplica cargo adicional por mora de más de 30 días'
+DO
+BEGIN
+  UPDATE cuota_manejo
+  SET valor = valor + 5000
+  WHERE estado_pago = 'pendiente'
+    AND fecha_cuota < DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+END $$
+
+DELIMITER ;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'penalizar_moras'
+
+--#19. Aumentar cuota de manejo mensual a todos
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS aumentar_cuota_manejo
+ON SCHEDULE EVERY 1 MONTH
+  STARTS '2025-08-01 00:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Incrementa el valor base de las cuotas de manejo'
+DO
+BEGIN
+  UPDATE cuota_manejo
+  SET valor = valor + 2000;
+END $$
+
+DELIMITER ;
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'aumentar_cuota_manejo'
+
+--#20. Para registrar intereses en las cuentas de CORRIENTE(1% mensual)
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS intereses_2
+ON SCHEDULE EVERY 1 MONTH 
+  STARTS '2025-05-22 15:00:00'
+ON COMPLETION PRESERVE 
+ENABLE
+COMMENT 'Aplica intereses a las cuentas de corrientes'
+DO 
+BEGIN
+  UPDATE cuenta
+  SET saldo = saldo + (saldo * 0.01)
+  WHERE tipo_cuenta = 'corriente';
+END $$
+
+DELIMITER $$
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'intereses_2'
