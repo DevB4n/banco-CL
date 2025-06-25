@@ -1,4 +1,4 @@
--- Active: 1748981230048@@127.0.0.1@3307@banco_cl
+-- Active: 1750881178308@@127.0.0.1@3307@banco
 USE banco;
 
 --#1. Evento que actualiza cuotas vencidas
@@ -144,3 +144,195 @@ DELIMITER ;
 
 SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'alerta_tarjetas';
 
+--#9. Comisión diaria de $200 a cuentas corrientes
+DELIMITER $$ 
+CREATE EVENT IF NOT EXISTS comision_diaria
+ON SCHEDULE EVERY 1 DAY
+  STARTS'2025-07-01 02:00:00'
+ON COMPLETION PRESERVE 
+ENABLE
+COMMENT 'Aplica una comisión diaria de $200 a cuentas corrientes'
+DO
+BEGIN 
+  UPDATE cuenta
+  SET saldo = saldo - 200
+  WHERE cuenta = 'corriente';
+END $$
+
+DELIMITER;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'comision_diaria'
+
+
+--#10. Bonificación mensual por saldo alto
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS bonificacion_mensual
+ON SCHEDULE EVERY 1 MONTH
+  STARTS '2025-07-31 23:59:00'
+ON COMPLETION PRESERVE 
+ENABLE
+COMMENT 'Bonifica a quienes tienen más de cierta cantidad de dinero'
+DO
+BEGIN
+  UPDATE cuenta
+  SET saldo = saldo + 5000
+  WHERE saldo > 1000000;
+END $$
+
+DELIMITER ;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'bonificacion_mensual' 
+
+--#11. Eliminar clientes que no tengan ninguna cuenta asociada
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS eliminar_clientes
+ON SCHEDULE EVERY 30 DAY
+  STARTS '2026-12-02 18:30:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Elimina clientes que no tengan ninguna cuenta asociada'
+DO
+BEGIN 
+  DELETE FROM cliente
+  WHERE cliente_id NOT IN (SELECT cliente_id FROM cuenta);
+END $$
+DELIMITER ;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'eliminar_clientes'
+
+--#12. Para registrar intereses en las cuentas de AHORRO (1% mensual)
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS intereses
+ON SCHEDULE EVERY 1 MONTH 
+  STARTS '2025-05-22 15:00:00'
+ON COMPLETION PRESERVE 
+ENABLE
+COMMENT 'Aplica intereses a las cuentas de ahorro'
+DO 
+BEGIN
+  UPDATE cuenta
+  SET saldo = saldo + (saldo * 0.01)
+  WHERE tipo_cuenta = 'ahorros';
+END $$
+
+DELIMITER $$
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'intereses'
+
+--#13. Dar bono a nuevos clientes 
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS bono_nuevos_clientes
+ON SCHEDULE EVERY 1 MONTH
+  STARTS '2025-08-01 09:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Bono a clientes que ingresaron este mes'
+DO
+BEGIN
+  UPDATE cuenta
+  SET saldo = saldo + 5000
+  WHERE cliente_id IN (
+    SELECT cliente_id FROM cliente
+    WHERE MONTH(fecha_registro) = MONTH(CURDATE())
+      AND YEAR(fecha_registro) = YEAR(CURDATE())
+  );
+END $$
+
+DELIMITER ;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'bono_nuevos_clientes'
+
+--#14. Limpia cuentas que no tienen saldo ni actividad
+
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS eliminar_cuentas_inutiles
+ON SCHEDULE EVERY 1 MONTH
+  STARTS '2025-07-30 06:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Limpia cuentas que no tienen saldo ni actividad'
+DO
+BEGIN
+  DELETE FROM cuenta
+  WHERE saldo = 0
+    AND estado_pagado = 'pendiente'
+    AND fecha_ultimo_movimiento < DATE_SUB(CURDATE(), INTERVAL 1 YEAR);
+END $$
+
+DELIMITER ;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'eliminar_cuentas_inutiles'
+
+--#15. Detectar movimientos SUSPICIOUS 
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS movimientos_sospechosos
+ON SCHEDULE EVERY 1 DAY
+  STARTS '2025-07-01 02:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Marca cuentas con retiros sospechosos'
+DO
+BEGIN
+  UPDATE cuenta
+  SET estado = 'sospechosa'
+  WHERE cuenta_id IN (
+    SELECT cuenta_id FROM tarjeta
+    WHERE monto > 5000000
+      AND fecha = CURDATE()
+  );
+END $$
+
+DELIMITER ;
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'movimientos_sospechosos'
+
+--#16. Renueva la fecha de vencmineto de tarjetas inactivas con la variable de fecha_vencimiento
+
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS renovar_tarjetas
+ON SCHEDULE EVERY 1 YEAR
+  STARTS '2025-12-01 10:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Renueva fecha de vencimiento de tarjetas activas'
+DO
+BEGIN
+  UPDATE tarjeta
+  SET fecha_vencimiento = DATE_ADD(CURDATE(), INTERVAL 4 YEAR);
+
+END $$
+
+DELIMITER ;
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'renovar_tarjetas'
+
+
+--#17. Aumenta el limite del credito
+
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS aumentar_limite_credito
+ON SCHEDULE EVERY 3 MONTH
+  STARTS '2025-07-01 07:00:00'
+ON COMPLETION PRESERVE
+ENABLE
+COMMENT 'Aumenta límite a clientes sin moras'
+DO
+BEGIN
+  UPDATE tarjeta
+  SET limite_credito = limite_credito + 100000
+  WHERE cliente_id IN (
+    SELECT cliente_id FROM cliente
+    WHERE estado_pago = 'pagado'
+    GROUP BY cliente_id
+    HAVING COUNT(*) >= 3
+  );
+END $$
+
+DELIMITER ;
+
+SELECT * FROM information_schema.EVENTS WHERE EVENT_NAME = 'aumentar_limite_credito'
+
+--#18.

@@ -1,4 +1,4 @@
--- Active: 1748981230048@@127.0.0.1@3307@banco_cl
+-- Active: 1750881178308@@127.0.0.1@3307@banco
 use banco;
 -- cliente
 INSERT INTO cliente (identificacion, nombre, apellido, celular, correo_electronico) values
