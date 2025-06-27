@@ -1,4 +1,4 @@
--- Active: 1750881178308@@127.0.0.1@3307@banco
+--active
 USE banco;
 
 --#1. Evento que actualiza cuotas vencidas
