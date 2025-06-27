@@ -6,13 +6,12 @@ Banco-CL simula el funcionamiento de una base de datos bancaria, tiene una estru
 
 ## Tabla Contenidos
 
-- [🔍 Descripción General](#-descripción-general)
-- [🗃️ Estructura del Proyecto](#-estructura-del-proyecto)
-- [👥 Gestión de Usuarios y Permisos](#-gestión-de-usuarios-y-permisos)
-- [🧱 Modelo de Base de Datos](#-modelo-de-base-de-datos)
-- [📄 Scripts Incluidos](#-scripts-incluidos)
-- [🛠️ Requisitos](#-requisitos)
-- [📜 Licencia](#-licencia)
+- [🔍 Descripción General](README.md)
+- [🗃️ Estructura del Proyecto](ddl.sql)
+- [👥 Gestión de Usuarios y Permisos](dcl_usuarios.sql)
+- [🧱 Modelo de Base de Datos](diagrama-banco-cl.png)
+- [📄 Ejercicios](dql_select.sql)
+- [📜 Licencia](licencia)
 
 
 ## Descripción General
